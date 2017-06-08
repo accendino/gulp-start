@@ -3,7 +3,8 @@ var runSequence = require('run-sequence');
 var browserSync = require("browser-sync").create();
 
 // Styles
-var less = require('gulp-less');
+//var less = require('gulp-less');
+var scss = require('gulp-sass');
 var autoprefixer = require("gulp-autoprefixer");
 var sourcemaps = require('gulp-sourcemaps');
 
@@ -31,15 +32,15 @@ gulp.task("server", function () {
 /* ------------------------------------
   LESS
 ------------------------------------ */
-gulp.task('less', function() {
-    return gulp.src('./app/less/main.less')
-      .pipe(sourcemaps.init())
-      .pipe(less())
-      .pipe(autoprefixer({ browsers: ['last 4 versions'] }))
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest('./app/css/'))
-      .pipe(browserSync.stream());
-});
+//gulp.task('less', function() {
+//    return gulp.src('./app/less/main.less')
+//      .pipe(sourcemaps.init())
+//      .pipe(less())
+//      .pipe(autoprefixer({ browsers: ['last 4 versions'] }))
+//      .pipe(sourcemaps.write())
+//      .pipe(gulp.dest('./app/css/'))
+//      .pipe(browserSync.stream());
+//});
 
 
 /* ------------------------------------
@@ -58,12 +59,15 @@ gulp.task('pug', function() {
 /* ------------------------------------
   SASS
 ------------------------------------ */
-/*
-
----- Сделать дома - ДЗ ------
 
 
-*/
+gulp.task('scss', function() {
+    return gulp.src('./app/scss/**/*.scss')
+    .pipe(scss())
+    .pipe(gulp.dest('./app/css/'))
+    .pipe(browserSync.stream());
+}); 
+
 
 
 
@@ -71,7 +75,8 @@ gulp.task('pug', function() {
   WATCH
 ------------------------------------ */
 gulp.task('watch', function() {
-    gulp.watch('./app/less/**/*.less', ['less']);
+    //gulp.watch('./app/less/**/*.less', ['less']);
+    gulp.watch('./app/scss/**/*.scss', ['scss']);
     gulp.watch('./app/pug/**/*.pug', ['pug']);
 });	
 
@@ -79,10 +84,11 @@ gulp.task('watch', function() {
 /* ------------------------------------
   GULP - DEFAULT TASK 
 ------------------------------------ */
-gulp.task('default', function() {
+gulp.task('default', function(callback) {
     runSequence(
-    	['less', 'pug'],
-    	['server', 'watch']
+    	[/*'less', */ 'scss', 'pug'],
+    	['server', 'watch'],
+      callback
     )
 });
 
