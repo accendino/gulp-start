@@ -28,7 +28,6 @@ gulp.task("server", function () {
 });
 
 
-
 /* ------------------------------------
   LESS
 ------------------------------------ */
@@ -59,16 +58,15 @@ gulp.task('pug', function() {
 /* ------------------------------------
   SASS
 ------------------------------------ */
-
-
 gulp.task('scss', function() {
-    return gulp.src('./app/scss/**/*.scss')
+    return gulp.src('./app/scss/main.scss')
+    .pipe(sourcemaps.init())
     .pipe(scss())
+    .pipe(autoprefixer({ browsers: ['last 4 versions'] }))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/css/'))
     .pipe(browserSync.stream());
 }); 
-
-
 
 
 /* ------------------------------------
@@ -91,6 +89,3 @@ gulp.task('default', function(callback) {
       callback
     )
 });
-
-
-
